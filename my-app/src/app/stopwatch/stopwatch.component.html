@@ -1,0 +1,15 @@
+<div class="main-block">
+<div class="title">
+  Stopwatch
+</div>
+  <div class="time">
+    {{timeToDisplay}}
+  </div>
+
+<div class="button-block">
+  <button (click)="startCount()" [disabled]="isStarted">Start</button>
+  <button (click)="stopCount()">Stop</button>
+  <button (click)="pauseCount()">Wait</button>
+  <button (click)="resetCount()">Reset</button>
+</div>
+</div>

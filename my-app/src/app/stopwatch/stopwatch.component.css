@@ -1,0 +1,27 @@
+.main-block {
+ display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  margin-top: 200px;
+}
+
+.title {
+  font-size: 24px;
+}
+
+.time {
+  font-size: 32px;
+}
+
+.button-block {
+  display: flex;
+  gap: 20px;
+}
+
+button {
+  width: 100px;
+  height: 40px;
+  font-size: 18px;
+}
