@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {interval, Observable, startWith, Subscription} from "rxjs";
+import {buffer, debounceTime, filter, fromEvent, interval, map, Observable, startWith, Subscription} from "rxjs";
 import {DatePipe} from "@angular/common";
 
 interface state {
@@ -21,7 +21,7 @@ export class StopwatchComponent implements OnInit {
 
   public clickTimeArr: number[] = [];
   public isStarted: boolean = false;
-  
+
   constructor(public datepipe: DatePipe) {
   }
 
@@ -51,21 +51,18 @@ export class StopwatchComponent implements OnInit {
   }
 
   pauseCount() {
-    let clickTime = performance.now();
-    this.clickTimeArr.push(clickTime);
+    const click$ = fromEvent(document, 'click');
+    const doubleClick$ = click$
+      .pipe(
+       buffer(click$.pipe(debounceTime(500))),
+        map(clicks => clicks.length),
+        filter(clicksLength => clicksLength >= 2)
+      );
 
-    if ((this.clickTimeArr[1] - this.clickTimeArr[0]) < 500) {
+    doubleClick$.subscribe(_ => {
       this.isStarted = false;
       this._timeSubscription?.unsubscribe();
-      this.clickTimeArr = []
-    } else if ((this.clickTimeArr[1] - this.clickTimeArr[0]) > 500) {
-      this.clickTimeArr = []
-    } else if (this.clickTimeArr.length < 2) {
-      setTimeout(() => {
-        this.clickTimeArr = []
-      }, 500);
-    }
-    console.log(this.clickTimeArr)
+    });
   }
 
 }
